@@ -14,26 +14,27 @@ class Room {
             return checkDate >= checkIn && checkDate < checkOut;
         });
     }
-
     occupancyPercentage(startDate, endDate) {
         const start = new Date(startDate);
         const end = new Date(endDate);
         let occupiedDays = 0;
         const totalDays = (end - start) / (1000 * 60 * 60 * 24) + 1;
-
+    
         for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
             if (this.isOccupied(date.toISOString().split('T')[0])) {
                 occupiedDays++;
             }
         }
-
+    
         return (occupiedDays / totalDays) * 100;
     }
+    
 
     static totalOccupancyPercentage(rooms, startDate, endDate) {
         const totalPercentage = rooms.reduce((total, room) => total + room.occupancyPercentage(startDate, endDate), 0);
         return (totalPercentage / rooms.length);
     }
+    
 
     static availableRooms(rooms, startDate, endDate) {
         return rooms.filter(room => {
